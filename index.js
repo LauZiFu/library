@@ -35,11 +35,22 @@ Book.prototype.createBookCard = function(){
     const div = document.createElement("div");
     div.setAttribute("data-LibraryId", this.getLibraryIndex());
 
+    //title of book
     const title = document.createElement("h2");
     title.textContent = this.title;
+
+    //author of book
     const author = document.createElement("div");
     author.textContent = this.author;
-    [title, author].forEach((e) => div.appendChild(e));
+
+    //remove button 
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.addEventListener("click", ()=>{
+        removeBookFromLibrary(this.getLibraryIndex());
+    });
+
+    [title, author, removeBtn].forEach((e) => div.appendChild(e));
 
     return div;
 }
@@ -50,16 +61,21 @@ function addBookToLibrary(title, author, pages, isRead=false) {
     myLibrary.push(book);
 }
 
+function removeBookFromLibrary(index){
+    if(index >= 0 && index < myLibrary.length){
+        myLibrary.splice(index, 1);
+        displayBooks();
+    }
+}
 
-function displayBooks(bookStyleClass){
-    for(const book of myLibrary){
-        book.setLibraryIndex();
-        if(![...library.children]
-        .some(child => child.getAttribute("data-LibraryId") === book.getLibraryIndex())){
-            let bookCard = book.createBookCard();
-            bookCard.classList.toggle(bookStyleClass);
-            library.appendChild(bookCard);
-        }
+function displayBooks(){
+    library.innerHTML = "";
+
+    for(let i=0; i < myLibrary.length; i++){
+        myLibrary[i].setLibraryIndex(); //match book object index with library array index
+        let bookCard = myLibrary[i].createBookCard();
+        bookCard.classList.toggle("book");
+        library.appendChild(bookCard);
     }
 }
 
@@ -69,21 +85,21 @@ addBookBtn.addEventListener("click", () => {
 });
 
 
-formDialog.addEventListener("close", (e)=> {
+formDialog.addEventListener("close", ()=> {
     let response = formDialog.returnValue;
 
     if(response !== "cancel" && response !== "default"){
         response = JSON.parse(response);
         console.log(response);
         addBookToLibrary(response.author, response.title, response.pages);
-        displayBooks("book");
+        displayBooks();
     } 
 
     bookForm.reset();
 });
 
 
-bookForm.addEventListener("submit", (e)=>{
+bookForm.addEventListener("submit", ()=>{
     confirmBtn.value = JSON.stringify({
         author: inputAuthor.value,
         title: inputTitle.value,
