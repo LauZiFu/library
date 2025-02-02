@@ -14,40 +14,45 @@
                 <div class="img-txt"></div>
                 <div class="logo-text">Library</div>
             </div>
-            <div class="search">
-                <label for="search-bar"><img src="" alt="" class="search-logo"></label>
-                <input type="search" name="search" id="search-bar">
-            </div>
-            <div class="actions">
-                <button class="add-book" id="add-book">New Book</button>
-            </div>
-            <dialog id="form-dialog">
-                <form method="dialog" action="" class="book-form">
-                    <section class="form-info">
-                        <p class="form-row">
-                            <label for="title">Title: </label>
-                            <input type="text" id="title" name="title" required>
-                        </p>
-                        <p class="form-row">
-                            <label for="author">Author: </label>
-                            <input type="text" id="author" name="pages" required>
-                        </p>
-                        <p class="form-row">
-                            <label for="pages">Pages: </label>
-                            <input type="number" id="pages" name="pages" required>
-                        </p>
-                    </section>
-                    <section>
-                        <button value="cancel" formnovalidate>Cancel</button>
-                        <button type="submit" id="confirm-btn" value="default">Confirm</button>
-                    </section>
-                </form>
-            </dialog>
         </header>
+        
         <div class="main">
             <div class="main-content">
+                <div class="library-title">
+                    <h1>My Library</h1>
+                </div>
+                <div class="menu">
+                    <div class="search">
+                        <label for="search-bar"><img src="" alt="" class="search-logo"></label>
+                        <input type="search" name="search" id="search-bar">
+                    </div>
+                    <div class="actions">
+                        <button class="add-book" id="add-book">New Book</button>
+                    </div>
+                </div>
+                <dialog id="form-dialog">
+                    <form method="dialog" action="" class="book-form">
+                        <section class="form-info">
+                            <p class="form-row">
+                                <label for="title">Title: </label>
+                                <input type="text" id="title" name="title" required>
+                            </p>
+                            <p class="form-row">
+                                <label for="author">Author: </label>
+                                <input type="text" id="author" name="pages" required>
+                            </p>
+                            <p class="form-row">
+                                <label for="pages">Pages: </label>
+                                <input type="number" id="pages" name="pages" required>
+                            </p>
+                        </section>
+                        <section>
+                            <button value="cancel" formnovalidate>Cancel</button>
+                            <button type="submit" id="confirm-btn" value="default">Confirm</button>
+                        </section>
+                    </form>
+                </dialog>
                 <div class="library">
-                    <h1>My Books</h1>
                     <div class="library-content" id="library-content"></div>
                 </div>
             </div>
