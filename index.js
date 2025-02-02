@@ -20,8 +20,8 @@ function Book(title, author, pages, isRead) {
         return index;
     }
 
-    this.setLibraryIndex = function(){
-        index = myLibrary.includes(this) ? myLibrary.indexOf(this) : null;
+    this.setLibraryIndex = function(i){
+        index = i;
     }
 }
 
@@ -30,53 +30,86 @@ Book.prototype.getIsRead = function() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${isReadStr}`;
 } 
 
+Book.prototype.toggleRead = function(){
+    this.isRead = !this.isRead;
+}
 
-Book.prototype.createBookCard = function(){
+
+function createBookCard(book, index) {
     const div = document.createElement("div");
-    div.setAttribute("data-LibraryId", this.getLibraryIndex());
+    div.classList.add("book");
+    div.dataset.libraryId = index; // Store index dynamically
 
-    //title of book
+    // Title
     const title = document.createElement("h2");
-    title.textContent = this.title;
+    title.textContent = book.title;
 
-    //author of book
+    // Author
     const author = document.createElement("div");
-    author.textContent = this.author;
+    author.textContent = `by ${book.author}`;
 
-    //remove button 
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.addEventListener("click", ()=>{
-        removeBookFromLibrary(this.getLibraryIndex());
+    // Pages
+    const pages = document.createElement("div");
+    pages.textContent = `Pages: ${book.pages}`;
+
+    // Actions
+    const actions = document.createElement("div");
+    actions.classList.add("book-actions");
+
+    const removeBtn = createButton("Remove", function() {
+        removeBookFromLibrary(parseInt(div.dataset.libraryId));
     });
 
-    [title, author, removeBtn].forEach((e) => div.appendChild(e));
+    const readBtn = createButton("Toggle Read", function() {
+        toggleBookRead(parseInt(div.dataset.libraryId));
+        this.classList.toggle("is-read", myLibrary[parseInt(div.dataset.libraryId)].isRead);
+    });
+
+    if (book.isRead) readBtn.classList.add("is-read");
+
+    [readBtn, removeBtn].forEach(btn => actions.appendChild(btn));
+    [title, author, pages, actions].forEach(el => div.appendChild(el));
 
     return div;
+}
+
+//auxillary button creator
+function createButton(textContent, callBack, event="click"){
+    const button = document.createElement("button");
+    button.textContent = textContent;
+    button.addEventListener(event, callBack);
+
+    return button;
 }
 
 
 function addBookToLibrary(title, author, pages, isRead=false) {
     const book = new Book(title, author, pages, isRead);
     myLibrary.push(book);
+    displayBooks();
 }
 
-function removeBookFromLibrary(index){
-    if(index >= 0 && index < myLibrary.length){
+function removeBookFromLibrary(index) {
+    if (index >= 0 && index < myLibrary.length) {
         myLibrary.splice(index, 1);
-        displayBooks();
+        displayBooks(); // Re-render to fix indices
     }
 }
 
-function displayBooks(){
-    library.innerHTML = "";
-
-    for(let i=0; i < myLibrary.length; i++){
-        myLibrary[i].setLibraryIndex(); //match book object index with library array index
-        let bookCard = myLibrary[i].createBookCard();
-        bookCard.classList.toggle("book");
-        library.appendChild(bookCard);
+function toggleBookRead(index) {
+    if (index >= 0 && index < myLibrary.length) {
+        myLibrary[index].toggleRead(); // Ensure the UI reflects the change
     }
+}
+
+//display function
+function displayBooks(){
+    library.innerHTML = ""; // Clear previous books before re-rendering
+    myLibrary.forEach((book, index) => {
+        book.setLibraryIndex(index);
+        const bookCard = createBookCard(book, index);
+        library.appendChild(bookCard);
+    });
 }
 
 
@@ -90,9 +123,7 @@ formDialog.addEventListener("close", ()=> {
 
     if(response !== "cancel" && response !== "default"){
         response = JSON.parse(response);
-        console.log(response);
-        addBookToLibrary(response.author, response.title, response.pages);
-        displayBooks();
+        addBookToLibrary(response.title, response.author, response.pages);
     } 
 
     bookForm.reset();

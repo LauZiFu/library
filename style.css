@@ -3,6 +3,12 @@
 :root {
     line-height: 1.5;
     --main-content-width: 1216px;
+    --main-bg-color: rgb(252, 252, 255);
+    --button-color: rgb(225, 229, 240);
+    --border-clr: rgb(226, 226, 226);
+    --paragrah-clr: rgb(87, 86, 95);
+    --border-style: 1px solid var(--border-clr);
+    --basic-border-radius: 8px;
 }
 
 h1, h2, h3, h4, h5, figure, p, ol, ul {
@@ -55,6 +61,13 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
+    font-family: system-ui, Helvetica, "Segoe UI", Roboto,  Arial, sans-serif, 
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+button:hover {
+    cursor: pointer;
+    filter: brightness(85%);
 }
 
 .container {
@@ -65,12 +78,13 @@ body {
 
 .header {
     padding: 2rem;
-    border-bottom: 1px solid gray;
+    border-bottom: var(--border-style);
 }
 
 .main {
     padding: 1rem 2rem;
-    background-color: lightgray;
+    padding-top: 3rem;;
+    background-color: var(--main-bg-color);
     flex: 1;
 }
 
@@ -83,7 +97,10 @@ body {
 }
 
 .library-title {
-    font-size: 4rem;
+    font-size: 3rem;
+    font-weight: 500;
+    align-self: center;
+    margin-bottom: 1rem;
 }
 
 .menu {
@@ -93,28 +110,74 @@ body {
 
 .search {
     flex:1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .search input[type="search"]{
-    border: 1px solid black;
     width: 30%;
+    padding: 0.5em;
+    font-size: 1rem;
 }
+
+button {
+    padding: 0.5em 2em;
+    background-color: var(--button-color);
+    border-radius: var(--basic-border-radius);
+    font-weight: 600;
+    color: var(--paragrah-clr)
+}
+
+.search input[type="search"],
+.library {
+    border-radius: var(--basic-border-radius);
+    border: var(--border-style);
+    box-shadow: 1px 1px 4px var(--border-clr);
+}
+
 
 .library {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     padding: 1rem;
-    border: 1px solid black;
+    background-color: white;
 }
 
 .book {
     width: 100%;
     padding: 2rem;
     display: flex;
+    flex-direction: column;
+}
+
+.book h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.book .book-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.book > h2 + div,
+.book > h2 + div + div,
+.book .book-actions > button { 
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--paragrah-clr)
 }
 
 .book:not(:last-child){
-    border-bottom: 1px solid black;
+    border-bottom: var(--border-style);
 }
 
+.is-read {
+    border: 1px solid green;
+}
