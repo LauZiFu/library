@@ -1,4 +1,4 @@
-@import 'node_modules/modern-normalize/modern-normalize.css';
+
 
 :root {
     line-height: 1.5;
@@ -126,7 +126,7 @@ button {
     background-color: var(--button-color);
     border-radius: var(--basic-border-radius);
     font-weight: 600;
-    color: var(--paragrah-clr)
+    color: var(--paragrah-clr);
 }
 
 .search input[type="search"],
